@@ -135,3 +135,20 @@ func ec2ValidateLogin(i *login) (creds *tags.Creds, err error) {
 	}
 	return creds, nil
 }
+
+func (s *ec2Regions) Execute(tail []string) error {
+	creds, err := ec2ValidateLogin(&s.login)
+	if err != nil {
+		return err
+	}
+	log.Print("Listing regions")
+	items, err := tags.Ec2Regions(s.Region, creds)
+	if err != nil {
+		return err
+	}
+	for _, item := range items {
+		fmt.Println(item)
+	}
+	log.Print("Done")
+	return nil
+}

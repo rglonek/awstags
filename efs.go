@@ -103,6 +103,23 @@ func (s *efsList) Execute(tail []string) error {
 	return nil
 }
 
+func (s *efsRegions) Execute(tail []string) error {
+	creds, err := efsValidateLogin(&s.login)
+	if err != nil {
+		return err
+	}
+	log.Print("Listing regions")
+	items, err := tags.EfsRegions(s.Region, creds)
+	if err != nil {
+		return err
+	}
+	for _, item := range items {
+		fmt.Println(item)
+	}
+	log.Print("Done")
+	return nil
+}
+
 func efsValidate(i *efsItems) (creds *tags.Creds, err error) {
 	if i.EfsId == nil {
 		return nil, errors.New("efs-id is a required field")

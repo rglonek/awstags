@@ -14,16 +14,18 @@ var toolVersion string
 
 type cli struct {
 	Ec2 struct {
-		Set    *ec2Set    `command:"set" description:"set tags from file/stdin json"`
-		Get    *ec2Get    `command:"get" description:"get tags of an instance, and print to stdout to json"`
-		Delete *ec2Delete `command:"delete" description:"delete all tags of an instance"`
-		List   *ec2List   `command:"list" description:"list all ec2 instances"`
+		Set     *ec2Set     `command:"set" description:"set tags from file/stdin json"`
+		Get     *ec2Get     `command:"get" description:"get tags of an instance, and print to stdout to json"`
+		Delete  *ec2Delete  `command:"delete" description:"delete all tags of an instance"`
+		List    *ec2List    `command:"list" description:"list all ec2 instances"`
+		Regions *ec2Regions `command:"regions" description:"list enabled ec2 regions"`
 	} `command:"ec2" description:"operate on ec2 tags"`
 	Efs struct {
-		Set    *efsSet    `command:"set" description:"set tags from file/stdin json"`
-		Get    *efsGet    `command:"get" description:"get tags of an efs, and print to stdout to json"`
-		Delete *efsDelete `command:"delete" description:"delete all tags of an efs"`
-		List   *efsList   `command:"list" description:"list all efs instances"`
+		Set     *efsSet     `command:"set" description:"set tags from file/stdin json"`
+		Get     *efsGet     `command:"get" description:"get tags of an efs, and print to stdout to json"`
+		Delete  *efsDelete  `command:"delete" description:"delete all tags of an efs"`
+		List    *efsList    `command:"list" description:"list all efs instances"`
+		Regions *efsRegions `command:"regions" description:"list enabled ec2 regions"`
 	} `command:"efs" description:"operate on efs tags"`
 	Version *version `command:"version" description:"print tool version"`
 }
@@ -46,6 +48,10 @@ type ec2Delete struct {
 type ec2List struct {
 	login
 	WithTags bool `short:"t" long:"with-tags" description:"list instances with tags - produces long json"`
+}
+
+type ec2Regions struct {
+	ec2Items
 }
 
 type login struct {
@@ -76,6 +82,10 @@ type efsDelete struct {
 type efsList struct {
 	login
 	WithTags bool `short:"t" long:"with-tags" description:"list efs with tags - produces long json"`
+}
+
+type efsRegions struct {
+	ec2Items
 }
 
 type efsItems struct {

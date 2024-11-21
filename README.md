@@ -143,5 +143,22 @@ done
   key=$(echo "$entry" | jq -r '.key')
   value=$(echo "$entry" | jq '.value')
   echo "$value" > "$key.json"
+
+# get all instances from all enabled regions
+awstags ec2 regions -r us-west-2 |while read region; do
+  awstags ec2 list -r $region -t |jq -c 'to_entries[]' | while read -r entry; do
+    key=$(echo "$entry" | jq -r '.key')
+    value=$(echo "$entry" | jq '.value')
+    echo "$value" > "$key.$region.ec2.json"
+  done
+done
+
+# get all efs from all enabled regions
+awstags efs regions -r us-west-2 |while read region; do
+  awstags efs list -r $region -t |jq -c 'to_entries[]' | while read -r entry; do
+    key=$(echo "$entry" | jq -r '.key')
+    value=$(echo "$entry" | jq '.value')
+    echo "$value" > "$key.$region.efs.json"
+  done
 done
 ```
